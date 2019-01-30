@@ -117,6 +117,14 @@ defmodule EvercamMedia.Util do
     |> Calendar.DateTime.Format.unix
   end
 
+  def datetime_to_iso8601(datetime, timezone \\ "Etc/UTC")
+  def datetime_to_iso8601(nil, _), do: nil
+  def datetime_to_iso8601(datetime, timezone) do
+    datetime
+    |> Calendar.DateTime.shift_zone!(timezone)
+    |> Calendar.DateTime.Format.iso8601
+  end
+
   def get_list(values) when values in [nil, ""], do: []
   def get_list(values) do
     values

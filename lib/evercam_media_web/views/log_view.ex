@@ -18,7 +18,7 @@ defmodule EvercamMediaWeb.LogView do
     }
   end
 
-  def render("user_logs.json", %{user_logs: user_logs}) do
+  def render("user_logs.v1.json", %{user_logs: user_logs}) do
     %{
       user_logs: Enum.map(user_logs, fn(log) ->
         %{
@@ -26,6 +26,20 @@ defmodule EvercamMediaWeb.LogView do
           action: log.action,
           camera_exid: log.camera_exid,
           done_at: Util.ecto_datetime_to_unix(log.done_at),
+          extra: log.extra
+        }
+      end)
+    }
+  end
+
+  def render("user_logs.v2.json", %{user_logs: user_logs}) do
+    %{
+      user_logs: Enum.map(user_logs, fn(log) ->
+        %{
+          who: name(log.name),
+          action: log.action,
+          camera_exid: log.camera_exid,
+          done_at: Util.datetime_to_iso8601(log.done_at),
           extra: log.extra
         }
       end)

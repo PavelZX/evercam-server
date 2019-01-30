@@ -1,5 +1,6 @@
 defmodule EvercamMediaWeb.Router do
   use EvercamMediaWeb, :router
+  alias EvercamMediaWeb.APIVersion
 
   pipeline :browser do
     plug :accepts, ["html", "json", "jpg"]
@@ -8,9 +9,16 @@ defmodule EvercamMediaWeb.Router do
     plug CORSPlug, origin: ["*"]
   end
 
-  pipeline :api do
+  pipeline :api_v1 do
     plug :accepts, ["json", "jpg"]
     plug CORSPlug, origin: ["*"]
+    plug APIVersion, version: :v1
+  end
+
+  pipeline :api_v2 do
+    plug :accepts, ["json", "jpg"]
+    plug CORSPlug, origin: ["*"]
+    plug APIVersion, version: :v2
   end
 
   def swagger_info do
@@ -50,8 +58,24 @@ end
     options "/live/:token", StreamController, :nothing
   end
 
+  scope "/v2", EvercamMediaWeb do
+    pipe_through :api_v2
+
+    post "/users", UserController, :create
+
+    scope "/" do
+      pipe_through :auth
+
+      get "/users/:id", UserController, :get
+      get "/users/telegram/:id/credentials", UserController, :credentialstelegram
+      patch "/users/:id", UserController, :update
+      options "/users/:id", UserController, :nothing
+      get "/users/session/activities", UserController, :user_activities
+    end
+  end
+
   scope "/v1", EvercamMediaWeb do
-    pipe_through :api
+    pipe_through :api_v1
 
     get "/cameras/port-check", CameraController, :port_check
     post "/cameras/test", SnapshotController, :test
