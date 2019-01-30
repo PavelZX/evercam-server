@@ -71,6 +71,16 @@ end
       patch "/users/:id", UserController, :update
       options "/users/:id", UserController, :nothing
       get "/users/session/activities", UserController, :user_activities
+
+      get "/cameras", CameraController, :index
+      options "/cameras", CameraController, :nothing
+      get "/cameras.json", CameraController, :index
+      options "/cameras.json", CameraController, :nothing
+      get "/cameras/:id", CameraController, :show
+      patch "/cameras/:id", CameraController, :update
+      options "/cameras/:id", CameraController, :nothing
+      put "/cameras/:id", CameraController, :transfer
+      post "/cameras", CameraController, :create
     end
   end
 
@@ -120,6 +130,7 @@ end
       put "/cameras/:id", CameraController, :transfer
       delete "/cameras/:id", CameraController, :delete
       post "/cameras", CameraController, :create
+
       get "/cameras/:id/thumbnail", SnapshotController, :thumbnail
       get "/cameras/:id/live/snapshot", SnapshotController, :live
       get "/cameras/:id/live/snapshot.jpg", SnapshotController, :live
