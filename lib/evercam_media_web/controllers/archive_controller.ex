@@ -228,7 +228,7 @@ defmodule EvercamMediaWeb.ArchiveController do
             agent: get_user_agent(conn, params["agent"])
           }
           |> Map.merge(get_requester_Country(user_request_ip(conn, params["requester_ip"]), params["u_country"], params["u_country_code"]))
-          CameraActivity.log_activity(current_user, camera, "retry archive creation", extra)
+          Util.log_activity(current_user, camera, "retry archive creation", extra)
 
           timezone = Camera.get_timezone(updated_archive.camera)
           unix_from = convert_to_user_time(updated_archive.from_date, timezone)
@@ -298,7 +298,7 @@ defmodule EvercamMediaWeb.ArchiveController do
         agent: get_user_agent(conn, params["agent"])
       }
       |> Map.merge(get_requester_Country(user_request_ip(conn, params["requester_ip"]), params["u_country"], params["u_country_code"]))
-      CameraActivity.log_activity(current_user, camera, "archive deleted", extra)
+      Util.log_activity(current_user, camera, "archive deleted", extra)
       json(conn, %{})
     end
   end
@@ -313,7 +313,7 @@ defmodule EvercamMediaWeb.ArchiveController do
           agent: get_user_agent(conn, params["agent"])
         }
         |> Map.merge(get_requester_Country(user_request_ip(conn, params["requester_ip"]), params["u_country"], params["u_country_code"]))
-        CameraActivity.log_activity(current_user, camera, "saved media URL", extra)
+        Util.log_activity(current_user, camera, "saved media URL", extra)
         render(conn |> put_status(:created), "show.json", %{archive: archive})
       {:error, changeset} ->
         render_error(conn, 400, Util.parse_changeset(changeset))
@@ -332,7 +332,7 @@ defmodule EvercamMediaWeb.ArchiveController do
           agent: get_user_agent(conn, params["agent"])
         }
         |> Map.merge(get_requester_Country(user_request_ip(conn, params["requester_ip"]), params["u_country"], params["u_country_code"]))
-        CameraActivity.log_activity(current_user, camera, "file uploaded", extra)
+        Util.log_activity(current_user, camera, "file uploaded", extra)
         copy_uploaded_file(Application.get_env(:evercam_media, :run_spawn), camera.exid, archive.exid, params["file_url"], params["file_extension"])
         render(conn |> put_status(:created), "show.json", %{archive: archive})
       {:error, changeset} ->
@@ -352,7 +352,7 @@ defmodule EvercamMediaWeb.ArchiveController do
           agent: get_user_agent(conn, params["agent"])
         }
         |> Map.merge(get_requester_Country(user_request_ip(conn, params["requester_ip"]), params["u_country"], params["u_country_code"]))
-        CameraActivity.log_activity(current_user, camera, "file uploaded", extra)
+        Util.log_activity(current_user, camera, "file uploaded", extra)
         save_edited_image(camera.exid, archive.exid, params["content"])
         render(conn |> put_status(:created), "show.json", %{archive: archive})
       {:error, changeset} ->
@@ -393,7 +393,7 @@ defmodule EvercamMediaWeb.ArchiveController do
               agent: get_user_agent(conn, params["agent"])
             }
             |> Map.merge(get_requester_Country(user_request_ip(conn, params["requester_ip"]), params["u_country"], params["u_country_code"]))
-            CameraActivity.log_activity(current_user, camera, "archive created", extra)
+            Util.log_activity(current_user, camera, "archive created", extra)
             start_archive_creation(Application.get_env(:evercam_media, :run_spawn), camera, archive, unix_from, unix_to, params["is_nvr_archive"])
             render(conn |> put_status(:created), "show.json", %{archive: archive})
           {:error, changeset} ->
@@ -459,7 +459,7 @@ defmodule EvercamMediaWeb.ArchiveController do
               agent: get_user_agent(conn, params["agent"])
             }
             |> Map.merge(get_requester_Country(user_request_ip(conn, params["requester_ip"]), params["u_country"], params["u_country_code"]))
-            CameraActivity.log_activity(user, camera, "archive edited", extra)
+            Util.log_activity(user, camera, "archive edited", extra)
             save_edited_image(camera.exid, archive.exid, params["content"])
             render(conn, "show.json", %{archive: updated_archive})
           {:error, changeset} ->

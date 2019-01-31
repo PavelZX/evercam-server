@@ -90,7 +90,7 @@ defmodule EvercamMedia.Mixfile do
       {:ecto_sql, "~> 3.0"},
       {:distillery, "~> 2.0.12"},
       {:geo, "~> 3.0"},
-      {:geo_postgis, "~> 2.0"},
+      {:geo_postgis, "~> 3.0"},
       {:httpoison, "~> 1.3", override: true},
       {:jsx, "~> 2.8.2", override: true},
       {:swoosh, "~> 0.20.0", override: true},
@@ -121,7 +121,8 @@ defmodule EvercamMedia.Mixfile do
       {:phoenix_swagger, "~> 0.7.0"},
       {:ex_json_schema, "~> 0.5"},
       {:geoip, "~> 0.2"},
-      {:poolboy, "~> 1.5.1"}
+      {:poolboy, "~> 1.5.1"},
+      {:evercam_models, github: "evercam/evercam_models", branch: "attach_to_evercam_server"}
     ]
   end
 end
