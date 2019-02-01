@@ -66,12 +66,14 @@ end
     scope "/" do
       pipe_through :auth
 
+      # User Route
       get "/users/:id", UserController, :get
       get "/users/telegram/:id/credentials", UserController, :credentialstelegram
       patch "/users/:id", UserController, :update
       options "/users/:id", UserController, :nothing
       get "/users/session/activities", UserController, :user_activities
 
+      # Cameras route
       get "/cameras", CameraController, :index
       options "/cameras", CameraController, :nothing
       get "/cameras.json", CameraController, :index
@@ -81,6 +83,20 @@ end
       options "/cameras/:id", CameraController, :nothing
       put "/cameras/:id", CameraController, :transfer
       post "/cameras", CameraController, :create
+
+      # Archive route
+      get "/cameras/archives/pending", ArchiveController, :pending_archives
+      get "/cameras/:id/archives", ArchiveController, :index
+      get "/cameras/:id/archives/:archive_id", ArchiveController, :show
+      get "/cameras/:id/archives/:archive_id/play", ArchiveController, :play
+      get "/cameras/:id/archives/:archive_id/thumbnail", ArchiveController, :thumbnail
+      delete "/cameras/:id/archives/:archive_id", ArchiveController, :delete
+      post "/cameras/:id/archives", ArchiveController, :create
+      options "/cameras/:id/archives", ArchiveController, :nothing
+      put "/cameras/:id/archives/:archive_id", ArchiveController, :retry
+      patch "/cameras/:id/archives/:archive_id", ArchiveController, :update
+      options "/cameras/:id/archives/:archive_id", ArchiveController, :nothing
+
     end
   end
 
@@ -162,6 +178,7 @@ end
       options "/cameras/:id/recordings/snapshots/:year/:month/:day/hours", SnapshotController, :nothing
       get "/cameras/:id/recordings/snapshots/:year/:month/:day/:hour", SnapshotController, :hour
       options "/cameras/:id/recordings/snapshots/:year/:month/:day/:hour", SnapshotController, :nothing
+
       get "/cameras/:id/logs", LogController, :show
       post "/logs", LogController, :create
       options "/logs", LogController, :nothing
@@ -171,6 +188,7 @@ end
       post "/cameras/:id/apps/cloud-recording", CloudRecordingController, :create
       get "/cameras/:id/apps/timelapse-recording", TimelapseRecordingController, :show
       post "/cameras/:id/apps/timelapse-recording", TimelapseRecordingController, :create
+
       get "/cameras/:id/shares", CameraShareController, :show
       post "/cameras/:id/shares", CameraShareController, :create
       options "/cameras/:id/shares", CameraShareController, :nothing
